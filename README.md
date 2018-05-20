@@ -1,5 +1,5 @@
 
-# digit_recognition_bernoulli_naive_bayes
+# Digit Recognition - Bernoulli Naive Bayes
 An implementation of Bernoulli Naive Bayes [kaggle](https://www.kaggle.com/c/digit-recognizer/submit) digit recognizer.
 
 - Input: train.csv and test.csv
