@@ -9,7 +9,7 @@ def train_bernoulli_nb( label_train, data_train_bi ):
 
     for i in range( 10 ):
         for j in range ( 784 ):
-            train[i][j] = ( train[i][j] + 1 ) / ( priors[i] + 2 )
+            train[i][j] = ( train[i][j] + 0.01 ) / ( priors[i] + 0.02 )
         priors[i] = priors[i] / len( label_train )
 
     return train, priors
@@ -25,7 +25,7 @@ def apply_bernoulli_nb( train, priors, test_dataset_bi ):
                     if test_dataset_bi[i][k] == 1:
                         score[j] += log( train[j][k] )
                     else:
-                        score[j] += 1. - train[j][k]
+                        score[j] += log ( 1. - train[j][k] )
             results[i] = [i+1, np.argmax( score )]
             print(i)
 
@@ -39,9 +39,10 @@ def  extract_terms_from_dosc (test_dataset_bi ):
     return results, score
 
 def extract_vocabulary_and_count_docs( label_train, data_train_bi ):
+
     train = [[0]*785 for _ in range(10)]
     priors = [0]*10
-    #Count Vocabulaty and Docs
+    #Count Vocabulary and Docs
     for i in range( len( label_train ) ):
         priors[label_train[i]] = priors[label_train[i]] + 1
         for j in range ( 784 ):
@@ -54,6 +55,7 @@ def read_csv_as_matrix( csv_path ):
     return pd.read_csv( csv_path ).as_matrix()
 
 def get_label_and_data_from_train( csv_as_matrix ):
+
     print("get_label_and_data_from_train")
     label_train = csv_as_matrix[0:,0]
     data_train = csv_as_matrix[0:,1:]
@@ -61,6 +63,7 @@ def get_label_and_data_from_train( csv_as_matrix ):
     return label_train, data_train
 
 def binarization( data_train ):
+
     print("binarization")
     return ( data_train >= 128 ).astype( int )
 
@@ -86,6 +89,6 @@ def main():
     results = apply_bernoulli_nb( train, priors, test_dataset_bi )
 
     #export result
-    export_result( results, "result-100-110.csv" )
+    export_result( results, "result.csv" )
 
 main()
